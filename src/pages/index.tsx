@@ -4,7 +4,7 @@ import { ColorMode, ThemeContext } from "../modules/ThemeProvider";
 
 export default function Home() {
   const { colorMode, setColorMode } = useContext(ThemeContext);
-  console.log(colorMode)
+  console.log(colorMode);
   return (
     <div className="bg-white dark:bg-gray-900 w-full h-full transition-colors duration-500">
       <Head>
@@ -43,12 +43,19 @@ export default function Home() {
             <br /> Documentaion &rarr;
           </a>
         </div>
-        <button className="self-center dark:text-white dark:border-gray-600 
+        <button
+          className="self-center dark:text-white dark:border-gray-600 
         transition duration-500 ease-in-out border-2 w-24
         hover:text-blue-500 dark:hover:text-blue-500 
-        hover:border-blue-500 dark:hover:border-blue-500" onClick={() => {
-            setColorMode(colorMode === ColorMode.dark ? ColorMode.light : ColorMode.dark)
-          }}>{colorMode === ColorMode.dark ? 'Light Mode' : 'Dark Mode'}</button>
+        hover:border-blue-500 dark:hover:border-blue-500"
+          onClick={() => {
+            setColorMode(
+              colorMode === ColorMode.dark ? ColorMode.light : ColorMode.dark
+            );
+          }}
+        >
+          {colorMode === ColorMode.dark ? "Light Mode" : "Dark Mode"}
+        </button>
       </main>
     </div>
   );
