@@ -1,28 +1,20 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { NextApiRequest, NextApiResponse } from "next";
+import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 
+const prisma = new PrismaClient();
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const dat = await axios.get(`https://www.modpackindex.com/api/v1/modpack/${req.body.id}`)
-  const actualData = dat.data;
+  const modpacks = await prisma.modpack.findMany({
+    where: {
+      modCount: {
+        lt: 100,
+      },
+    },
+  });
 
-  console.log(actualData);
-
-  
-
-  const modDat = await axios.get(`https://www.modpackindex.com/api/v1/modpack/${req.body.id}/mods`);
-  const modActDatLen = modDat.data["data"].length;
-
-  let doesPlayerHaveEnoughRam = false;
-  console.log(req.body.ram)
-  if (req.body.ram - 3 >= 7 && modActDatLen <= 300) {
-    console.log("Hi")
-    doesPlayerHaveEnoughRam = true
-  }  else {
-    console.log("bye")
-    doesPlayerHaveEnoughRam = false
-  }
-
-  res.status(200).json({ modActDatLen, doesPlayerHaveEnoughRam });
+  // const modpackData = (await axios.get(`https://www.modpackindex.com/api/v1/modpack/${modpacks?.modpackId}`)).data
+  // res.status(200).send({modpackData})
 };

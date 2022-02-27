@@ -1,9 +1,19 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient()
 
 export default async(req: NextApiRequest, res: NextApiResponse) => {
-    const modDat = await axios.get(`https://www.modpackindex.com/api/v1/modpack/${req.body.id}/mods`);
-    const modActDatLen = modDat.data["data"].length;
+    const modpacks = await prisma.modpack.findMany({
+        where: {
+            modCount: {
+                lt: 100
+            }
+        },
+        orderBy: {
+            downloadCount: 'desc'
+        }
+    });
 
-    res.status(200).json({"modCount": modActDatLen})
+    console.log(modpacks)
 }
